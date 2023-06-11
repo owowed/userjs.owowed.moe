@@ -1,2 +1,0 @@
-git subtree pull --prefix public/common https://github.com/owowed/userscript-common.git main --squash
-git subtree pull --prefix public/scripts https://github.com/owowed/owowed-userscripts.git main --squash
