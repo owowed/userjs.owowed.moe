@@ -1,10 +1,10 @@
 name: Github Pages Deploy Artifact
 
-# on:
-#   push:
-#     branches:
-#       - main
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
+# on: workflow_dispatch
 
 jobs:
   build:
@@ -29,6 +29,9 @@ jobs:
         uses: jayanta525/github-pages-directory-listing@v3.0.0
         with:
           FOLDER: public
+
+      - name: .git folder cleanup
+        run: find public -type d -name ".git" -exec rm -rf {} +
 
       - name: Run tree
         run: tree
