@@ -26,8 +26,10 @@ jobs:
       
       - name: Rename repository folders
         run: |
+          mkdir public/common
+          mkdir public/scripts
           mv usc/ public/common
-          mv ous public/scripts
+          mv ous/ public/scripts
   publish:
     needs: checkout-repos
     runs-on: ubuntu-latest
