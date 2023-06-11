@@ -1,10 +1,10 @@
 name: Github Pages Deploy Artifact
 
-# on:
-#   push:
-#     branches:
-#       - main
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
+# on: workflow_dispatch
 
 jobs:
   build:
@@ -37,9 +37,8 @@ jobs:
         run: tree
       
       - name: Upload github-pages artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v1
         with:
-          name: github-pages
           path: public
   publish:
     needs: build
