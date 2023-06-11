@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  checkout-repos:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out main repo
@@ -23,18 +23,23 @@ jobs:
         with:
           repository: owowed/owowed-userscripts
           path: public/scripts
-      
-      - name: Run tree end
-        if: success()
-        run: tree
-  publish:
-    needs: checkout-repos
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run tree start
-        if: success()
-        run: tree
 
+      - name: Run tree
+        run: tree
+      
+      - name: Upload github-pages artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: github-pages
+          path: .
+  publish:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      pages: write
+      id-token: write
+
+    steps:
       - name: Generate Directory Listings
         uses: jayanta525/github-pages-directory-listing@v3.0.0
         with:
@@ -42,14 +47,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v3
-        with:
-          fqdn: userjs.owowed.moe
-          target_branch: gh-pages
-          build_dir: public
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/deploy-pages@v2
 
-      - name: Run tree end
-        if: success()
+      - name: Run tree
         run: tree
