@@ -24,7 +24,7 @@ jobs:
         if: success()
         uses: crazy-max/ghaction-github-pages@v3
         with:
-            fqdn: hello.owowed.moe
+            fqdn: userjs.owowed.moe
             target_branch: gh-pages
             build_dir: public
         env:
