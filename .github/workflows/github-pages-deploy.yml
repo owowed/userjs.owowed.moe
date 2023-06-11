@@ -23,12 +23,17 @@ jobs:
         with:
           repository: owowed/owowed-userscripts
           path: public/scripts
+          
+      - name: Generate Directory Listings
+        uses: jayanta525/github-pages-directory-listing@v3.0.0
+        with:
+          FOLDER: public
 
       - name: Run tree
         run: tree
       
       - name: Upload github-pages artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: github-pages
           path: .
@@ -45,11 +50,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Generate Directory Listings
-        uses: jayanta525/github-pages-directory-listing@v3.0.0
-        with:
-          FOLDER: public
-
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
