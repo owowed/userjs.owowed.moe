@@ -1,10 +1,10 @@
 name: Github Pages Deploy Artifact
 
-on:
-  push:
-    branches:
-      - main
-# on: workflow_dispatch
+# on:
+#   push:
+#     branches:
+#       - main
+on: workflow_dispatch
 
 jobs:
   build:
@@ -39,7 +39,7 @@ jobs:
       - name: Upload github-pages artifact
         uses: actions/upload-artifact@v3
         with:
-          name: gh-pages
+          name: github-pages
           path: .
   publish:
     needs: build
@@ -50,15 +50,13 @@ jobs:
       id-token: write
 
     environment:
-      name: gh-pages
+      name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
-        with:
-          artifact_name: gh-pages
 
       - name: Run tree
         run: tree
