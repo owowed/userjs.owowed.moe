@@ -3,7 +3,7 @@ name: Github Pages Deploy
 on:
   push:
     branches:
-      - "main"
+      - main
 
 jobs:
   publish:
@@ -14,12 +14,17 @@ jobs:
         
       - name: List project folders
         run: ls
+    
+      - name: Generate Directory Listings
+        uses: jayanta525/github-pages-directory-listing@v3.0.0
+        with:
+          FOLDER: public
 
       - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v3
         with:
-            fqdn: userjs.owowed.moe
+            fqdn: hello.owowed.moe
             target_branch: gh-pages
             build_dir: public
         env:
