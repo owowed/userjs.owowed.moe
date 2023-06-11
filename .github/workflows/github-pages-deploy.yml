@@ -26,7 +26,7 @@ jobs:
       
       - name: Rename repository folders
         run: |
-          ls
+          tree
           mkdir public/common
           mkdir public/scripts
           mv usc/ public/common
