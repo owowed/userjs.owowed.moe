@@ -12,17 +12,17 @@ jobs:
       - name: Check out main repo
         uses: actions/checkout@v3
 
-      - name: Check out userscript-common
-        uses: actions/checkout@v3
-        with:
-          repository: owowed/userscript-common
-          path: usc/
+      # - name: Check out userscript-common
+      #   uses: actions/checkout@v3
+      #   with:
+      #     repository: owowed/userscript-common
+      #     path: usc/
 
-      - name: Check out owowed-userscripts
-        uses: actions/checkout@v3
-        with:
-          repository: owowed/owowed-userscripts
-          path: ous/
+      # - name: Check out owowed-userscripts
+      #   uses: actions/checkout@v3
+      #   with:
+      #     repository: owowed/owowed-userscripts
+      #     path: ous/
       
       - name: Rename repository folders
         if: success()
@@ -32,21 +32,21 @@ jobs:
           mkdir public/scripts
           mv usc/ public/common
           mv ous/ public/scripts
-  publish:
-    needs: checkout-repos
-    runs-on: ubuntu-latest
-    steps:
-      - name: Generate Directory Listings
-        uses: jayanta525/github-pages-directory-listing@v3.0.0
-        with:
-          FOLDER: public
+  # publish:
+  #   needs: checkout-repos
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Generate Directory Listings
+  #       uses: jayanta525/github-pages-directory-listing@v3.0.0
+  #       with:
+  #         FOLDER: public
 
-      - name: Deploy to GitHub Pages
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v3
-        with:
-          fqdn: userjs.owowed.moe
-          target_branch: gh-pages
-          build_dir: public
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Deploy to GitHub Pages
+  #       if: success()
+  #       uses: crazy-max/ghaction-github-pages@v3
+  #       with:
+  #         fqdn: userjs.owowed.moe
+  #         target_branch: gh-pages
+  #         build_dir: public
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
