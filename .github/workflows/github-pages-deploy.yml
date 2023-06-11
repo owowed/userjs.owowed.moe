@@ -28,11 +28,12 @@ jobs:
         run: tree
       
       - name: Upload github-pages artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: github-pages
           path: .
   publish:
+    needs: build
     runs-on: ubuntu-latest
     
     permissions:
