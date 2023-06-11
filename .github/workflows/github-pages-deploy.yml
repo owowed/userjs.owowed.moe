@@ -6,26 +6,45 @@ on:
       - main
 
 jobs:
-  publish:
+  checkout-repos:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out
+      - name: Check out main repo
         uses: actions/checkout@v3
-        
-      - name: List project folders
-        run: ls
-    
-      - name: Generate Directory Listings
-        uses: jayanta525/github-pages-directory-listing@v3.0.0
-        with:
-          FOLDER: public
 
-      - name: Deploy to GitHub Pages
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v3
+      - name: Check out userscript-common
+        uses: actions/checkout@v3
         with:
-          fqdn: userjs.owowed.moe
-          target_branch: gh-pages
-          build_dir: public
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            repository: owowed/userscript-common
+            path: public/
+
+      - name: Check out owowed-userscripts
+        uses: actions/checkout@v3
+        with:
+          repository: owowed/owowed-userscripts
+          path: abc/
+      
+      - name: list
+        run: ls
+
+      # - name: Rename repositories
+      #   run: |
+      #     mov publuc.
+  # publish:
+  #   needs: checkout-repos
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Generate Directory Listings
+  #       uses: jayanta525/github-pages-directory-listing@v3.0.0
+  #       with:
+  #         FOLDER: public
+
+  #     - name: Deploy to GitHub Pages
+  #       if: success()
+  #       uses: crazy-max/ghaction-github-pages@v3
+  #       with:
+  #         fqdn: userjs.owowed.moe
+  #         target_branch: gh-pages
+  #         build_dir: public
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
