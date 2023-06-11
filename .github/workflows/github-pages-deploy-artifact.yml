@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: github-pages
-          path: .
+          path: public
   publish:
     needs: build
     runs-on: ubuntu-latest
