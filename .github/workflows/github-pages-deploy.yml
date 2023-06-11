@@ -39,6 +39,10 @@ jobs:
       pages: write
       id-token: write
 
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Generate Directory Listings
         uses: jayanta525/github-pages-directory-listing@v3.0.0
@@ -46,7 +50,7 @@ jobs:
           FOLDER: public
 
       - name: Deploy to GitHub Pages
-        if: success()
+        id: deployment
         uses: actions/deploy-pages@v2
 
       - name: Run tree
