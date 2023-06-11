@@ -25,6 +25,7 @@ jobs:
           path: ous/
       
       - name: Rename repository folders
+        if: success()
         run: |
           tree
           mkdir public/common
