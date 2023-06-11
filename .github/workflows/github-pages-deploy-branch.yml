@@ -24,14 +24,14 @@ jobs:
         with:
           repository: owowed/owowed-userscripts
           path: public/scripts
-
-      - name: .git folder cleanup
-        run: find public -type d -name ".git" -exec rm -rf {} +
           
       - name: Generate Directory Listings
         uses: jayanta525/github-pages-directory-listing@v3.0.0
         with:
           FOLDER: public
+
+      - name: .git folder cleanup
+        run: find public -type d -name ".git" -exec rm -rf {} +
 
       - name: Run tree
         run: tree
