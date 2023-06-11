@@ -24,13 +24,17 @@ jobs:
           repository: owowed/owowed-userscripts
           path: public/scripts
       
-      - name: Run tree
+      - name: Run tree end
         if: success()
         run: tree
   publish:
     needs: checkout-repos
     runs-on: ubuntu-latest
     steps:
+      - name: Run tree start
+        if: success()
+        run: tree
+
       - name: Generate Directory Listings
         uses: jayanta525/github-pages-directory-listing@v3.0.0
         with:
@@ -45,7 +49,7 @@ jobs:
           build_dir: public
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Run tree
+
+      - name: Run tree end
         if: success()
         run: tree
