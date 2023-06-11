@@ -1,4 +1,4 @@
-name: Github Pages Deploy Artifact
+name: Github Pages Deploy gh-pages
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 # on: workflow_dispatch
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Check out main repo
@@ -35,27 +35,13 @@ jobs:
 
       - name: Run tree
         run: tree
-      
-      - name: Upload github-pages artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: public
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
     
-    permissions:
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
-
-      - name: Run tree
-        run: tree
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+            fqdn: userjs.owowed.moe
+            target_branch: gh-pages
+            build_dir: public
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

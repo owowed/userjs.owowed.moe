@@ -1,13 +1,13 @@
-name: Github Pages Deploy Branch
+name: Github Pages Deploy
 
-# on:
-#   push:
-#     branches:
-#       - main
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
+# on: workflow_dispatch
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out main repo
@@ -33,15 +33,29 @@ jobs:
       - name: .git folder cleanup
         run: find public -type d -name ".git" -exec rm -rf {} +
 
+      - name: Upload github-pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: public
+      
       - name: Run tree
         run: tree
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
     
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
       - name: Deploy to GitHub Pages
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v3
-        with:
-            fqdn: userjs.owowed.moe
-            target_branch: gh-pages
-            build_dir: public
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: deployment
+        uses: actions/deploy-pages@v2
+
+      - name: Run tree
+        run: tree
