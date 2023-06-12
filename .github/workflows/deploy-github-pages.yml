@@ -1,4 +1,4 @@
-name: Github Pages Deploy
+name: Deploy Github Pages
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 # on: workflow_dispatch
 
 jobs:
-  build:
+  build-pages:
     runs-on: ubuntu-latest
     steps:
       - name: Check out main repo
@@ -25,14 +25,16 @@ jobs:
         with:
           repository: owowed/owowed-userscripts
           path: public/scripts
+
+      - name: Git leftovers cleanup
+        run: |
+          find public -type d -name ".git" -exec rm -rf {} +
+          find public -type d -name ".github" -exec rm -rf {} +
           
       - name: Generate Directory Listings
         uses: jayanta525/github-pages-directory-listing@v3.0.0
         with:
           FOLDER: public
-
-      - name: .git folder cleanup
-        run: find public -type d -name ".git" -exec rm -rf {} +
 
       - name: Upload github-pages artifact
         uses: actions/upload-pages-artifact@v1
@@ -42,7 +44,7 @@ jobs:
       - name: Run tree
         run: tree
   publish:
-    needs: build
+    needs: build-pages
     runs-on: ubuntu-latest
     
     permissions:
@@ -58,5 +60,30 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v2
 
-      - name: Run tree
-        run: tree
+  publish-branch:
+    needs: build-pages
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Download github-pages artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: github-pages
+          path: public
+
+      - name: Extract github-pages tar
+        run: |
+          tar -xvf public/artifact.tar -C public
+          rm public/artifact.tar
+
+      - name: Deploy to GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+            fqdn: userjs.owowed.moe
+            target_branch: gh-pages
+            build_dir: public
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
